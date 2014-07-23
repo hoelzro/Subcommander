@@ -259,7 +259,36 @@ our class DefaultTypeResolver does TypeResolver {}
 our class DefaultOptionCanonicalizer does OptionCanonicalizer {}
 our class DefaultOptionParser does OptionParser {}
 
+multi trait_mod:<is>(Routine $r, :subcommand($name)! is copy) is export {
+    if $name ~~ Bool {
+        $name = $r.name;
+    }
+    $r does Subcommand;
+    $r.command-name = $name;
+}
+
+multi trait_mod:<is>(Routine $r, :option($name)! is copy) is export {
+    if $name ~~ Bool {
+        $name = $r.name;
+    }
+
+    $r does AppOption;
+    $r.set_rw();
+    $r.option-name = $name;
+}
+
+multi trait_mod:<is>(Attribute $a, :option($name)! is copy) is export {
+    if $name ~~ Bool {
+        $name = $a.name.subst(/^<[$@%&]> '!'/, '');
+    }
+    $a does AppOption;
+    $a.set_rw();
+    $a.option-name = $name;
+}
+
 our role Application {
+    has Bool $.help is option;
+
     method type-resolver(*@args, *%kwargs) { DefaultTypeResolver.new(|@args, |%kwargs) }
     method option-parser(*@args, *%kwargs) { DefaultOptionParser.new(|@args, |%kwargs) }
     method option-canonicalizer(*@args, *%kwargs) { DefaultOptionCanonicalizer.new(|@args, |%kwargs) }
@@ -470,31 +499,4 @@ our role Application {
             $*ERR.say: sprintf($format, $name, $description);
         }
     }
-}
-
-multi trait_mod:<is>(Routine $r, :subcommand($name)! is copy) is export {
-    if $name ~~ Bool {
-        $name = $r.name;
-    }
-    $r does Subcommand;
-    $r.command-name = $name;
-}
-
-multi trait_mod:<is>(Routine $r, :option($name)! is copy) is export {
-    if $name ~~ Bool {
-        $name = $r.name;
-    }
-
-    $r does AppOption;
-    $r.set_rw();
-    $r.option-name = $name;
-}
-
-multi trait_mod:<is>(Attribute $a, :option($name)! is copy) is export {
-    if $name ~~ Bool {
-        $name = $a.name.subst(/^<[$@%&]> '!'/, '');
-    }
-    $a does AppOption;
-    $a.set_rw();
-    $a.option-name = $name;
 }
