@@ -466,6 +466,7 @@ our role Application {
         for %commands.keys.sort -> $name {
             my $command = %commands{$name};
             my $description = ~($command.WHY // '');
+            $description .= subst(/<?after '.'>.*/, '');
             $*ERR.say: sprintf($format, $name, $description);
         }
     }
