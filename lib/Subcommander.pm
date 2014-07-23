@@ -465,7 +465,7 @@ our role Application {
 
         for %commands.keys.sort -> $name {
             my $command = %commands{$name};
-            my $description = ~$command.WHY // '';
+            my $description = ~($command.WHY // '');
             $*ERR.say: sprintf($format, $name, $description);
         }
     }
