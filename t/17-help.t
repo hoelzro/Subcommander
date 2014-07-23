@@ -43,14 +43,14 @@ $help = collect-help(App.new, {
 
 is $help, $TOP_LEVEL_HELP;
 
-#$help = collect-help(App.new, {
-    #$^app.run(['--help']);
-#});
+$help = collect-help(App.new, {
+    $^app.run(['--help']);
+});
 
-#is $help, $TOP_LEVEL_HELP;
+is $help, $TOP_LEVEL_HELP;
 
 # non-existing command
-# non-existing option
+# non-existing option (app and command)
 # bad parse for option
 # no command provided
 # --help, -h
@@ -59,3 +59,4 @@ is $help, $TOP_LEVEL_HELP;
 # -?
 # --version, -v
 # version command
+# does --help/help command run app option accessors?
