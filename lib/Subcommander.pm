@@ -458,7 +458,7 @@ our role Application {
     }
 
     method show-help {
-        $*ERR.say: "Usage: $*PROGRAM_NAME [command]";
+        $*ERR.say: "Usage: $*PROGRAM_NAME [command]\n";
         my %commands    = %(self!get-commands);
         my $max-cmd-len = [max] %commands.keys>>.chars; # XXX graphemes?
         my $format      = "%{$max-cmd-len}s\t%s";
