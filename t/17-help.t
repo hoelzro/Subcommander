@@ -27,6 +27,8 @@ my class App does Subcommander::Application {
     }
 }
 
+plan *;
+
 my $*PROGRAM_NAME = 'App';
 
 my $TOP_LEVEL_HELP = qq:to/END_HELP/;
@@ -48,6 +50,8 @@ $help = collect-help(App.new, {
 });
 
 is $help, $TOP_LEVEL_HELP;
+
+done;
 
 # non-existing command
 # non-existing option (app and command)
