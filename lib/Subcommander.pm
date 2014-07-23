@@ -486,7 +486,8 @@ our role Application {
         }
     }
 
-    method show-help {
+    #| Display help to the user
+    method show-help is subcommand('help') {
         $*ERR.say: "Usage: $*PROGRAM_NAME [command]\n";
         my %commands    = %(self!get-commands);
         my $max-cmd-len = [max] %commands.keys>>.chars; # XXX graphemes?
