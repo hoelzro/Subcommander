@@ -35,6 +35,7 @@ my $TOP_LEVEL_HELP = qq:to/END_HELP/;
 Usage: App [command]
 
 good-cmd	Does good things.
+    help	Display help to the user
 END_HELP
 
 my $help;
