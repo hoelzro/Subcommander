@@ -38,6 +38,16 @@ good-cmd	Does good things.
     help	Display help to the user
 END_HELP
 
+my $GOOD_CMD_HELP = qq:to/END_HELP/;
+Usage: App good-cmd [options]
+
+Options:
+
+ --target	The thing to do good things to
+--option1	Something optional
+--option2	Something else optional
+END_HELP
+
 my $help;
 
 $help = collect-help(App.new, {
@@ -51,6 +61,19 @@ $help = collect-help(App.new, {
 });
 
 is $help, $TOP_LEVEL_HELP;
+
+$help = collect-help(App.new, {
+    $^app.run(['help', 'good-cmd']);
+});
+
+is $help, $GOOD_CMD_HELP;
+
+$help = collect-help(App.new, {
+    $^app.run(['good-cmd', '--help']);
+});
+
+todo 'command --help NYI', 1;
+is $help, $GOOD_CMD_HELP;
 
 done;
 
