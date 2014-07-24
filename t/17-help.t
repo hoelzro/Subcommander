@@ -80,11 +80,11 @@ done;
 # non-existing command
 # non-existing option (app and command)
 # bad parse for option
-# no command provided
 # --help, -h
 # --help vs --help-commands?
-# help command
 # -?
 # --version, -v
 # version command
 # does --help/help command run app option accessors?
+# Insert app comment/command comment before options/targets
+# app options
