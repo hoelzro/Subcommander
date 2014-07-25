@@ -487,17 +487,50 @@ our role Application {
     }
 
     #| Display help to the user
-    method show-help is subcommand('help') {
-        $*ERR.say: "Usage: $*PROGRAM_NAME [command]\n";
-        my %commands    = %(self!get-commands);
-        my $max-cmd-len = [max] %commands.keys>>.chars; # XXX graphemes?
-        my $format      = "%{$max-cmd-len}s\t%s";
+    method show-help(Str $command-name?) is subcommand('help') {
+        if $command-name.defined {
+            my $command = self!get-commands(){$command-name};
 
-        for %commands.keys.sort -> $name {
-            my $command = %commands{$name};
-            my $description = ~($command.WHY // '');
-            $description .= subst(/<?after '.'>.*/, '');
-            $*ERR.say: sprintf($format, $name, $description);
+            unless $command {
+                return;
+            }
+
+            my @params;
+            my @options;
+
+            for $command.signature.params -> $param {
+                next if $param.invocant;
+                next if $param.slurpy;
+
+                if $param.named {
+                    @options.push: ['--' ~ $param.named_names[0], $param];
+                } else {
+                    @params.push: $param.name.subst(/^ '$'/, ''); # XXX where do the docs for this go?
+                }
+            }
+
+            # XXX only print 'Options:' if there are any!
+            $*ERR.say: "Usage: $*PROGRAM_NAME $command-name [options] {@params.join(' ')}\n\nOptions:\n";
+
+            my $max-opt-len = [max] @options>>[0]>>.chars; # XXX graphemes
+            my $format      = "%{$max-opt-len}s\t%s";
+
+            for @options.sort -> ( $name, $option )  {
+                my $description = $option.WHY // '';
+                $*ERR.say: sprintf($format, $name, $description);
+            }
+        } else {
+            $*ERR.say: "Usage: $*PROGRAM_NAME [command]\n";
+            my %commands    = %(self!get-commands);
+            my $max-cmd-len = [max] %commands.keys>>.chars; # XXX graphemes?
+            my $format      = "%{$max-cmd-len}s\t%s";
+
+            for %commands.keys.sort -> $name {
+                my $command = %commands{$name};
+                my $description = ~($command.WHY // '');
+                $description .= subst(/<?after '.'>.*/, '');
+                $*ERR.say: sprintf($format, $name, $description);
+            }
         }
     }
 }
