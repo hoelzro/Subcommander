@@ -87,3 +87,6 @@ done;
 # does --help/help command run app option accessors?
 # Insert app comment/command comment before options/targets
 # app options
+# help $bad-cmd
+# command/option aliases
+# basically, every feature I've added so far
