@@ -11,9 +11,6 @@ my role AppOption {
 my class SubcommanderException is Exception {
     has Str $.message;
 
-    method new(Str $message?) {
-        self.bless(:$message);
-    }
 }
 
 my class NoCommandGiven is SubcommanderException {
@@ -122,7 +119,7 @@ our role TypeResolver {
                 $value = $from."$name"();
                 CATCH {
                     default {
-                        SubcommanderException.new("Failed to convert '$from'").throw;
+                        SubcommanderException.new(:message("Failed to convert '$from'")).throw;
                     }
                 }
             }
@@ -223,7 +220,7 @@ our role OptionParser {
 
         if $type-resolver.typeof($key) ~~ Bool {
             if $value.defined {
-                SubcommanderException.new("Option '$key' is a flag, and thus doesn't take a value").throw;
+                SubcommanderException.new(:message("Option '$key' is a flag, and thus doesn't take a value")).throw;
             } else {
                 $value = 'True'; # coercion from Str → Bool will happen later on
             }
@@ -325,7 +322,7 @@ our role Application {
 
                         CATCH {
                             when NoMoreValues {
-                                SubcommanderException.new("Option '$name' requires a value").throw;
+                                SubcommanderException.new(:message("Option '$name' requires a value")).throw;
                             }
                         }
                     }
@@ -346,7 +343,7 @@ our role Application {
                     }
                 } else {
                     unless self!is-valid-app-option($name) {
-                        SubcommanderException.new("Unrecognized option '$name'").throw;
+                        SubcommanderException.new(:message("Unrecognized option '$name'")).throw;
                     }
 
                     my $container     := self."$name"();
@@ -371,7 +368,7 @@ our role Application {
                 } else {
                     $subcommand = self!get-commands(){~$_};
                     if $subcommand !~~ Subcommand {
-                        SubcommanderException.new("No such command '$_'").throw;
+                        SubcommanderException.new(:message("No such command '$_'")).throw;
                     }
                     $type-resolver = $.type-resolver(:command($subcommand));
                     $canonicalizer = DefaultOptionCanonicalizer.new(:command($subcommand));
@@ -394,7 +391,7 @@ our role Application {
             }
             if $method ~~ Subcommand {
                 if %result{$method.command-name}:exists {
-                    SubcommanderException.new("Duplicate definition of subcommand '$method.command-name()'").throw;
+                    SubcommanderException.new(:message("Duplicate definition of subcommand '$method.command-name()'")).throw;
                 }
                 %result{$method.command-name} = $method;
             }
@@ -411,10 +408,10 @@ our role Application {
         my $saw-slurpy-named;
 
         if +$pos-args < $arity {
-            SubcommanderException.new('Too few arguments').throw;
+            SubcommanderException.new(:message('Too few arguments')).throw;
         }
         if +$pos-args > $count {
-            SubcommanderException.new('Too many arguments').throw;
+            SubcommanderException.new(:message('Too many arguments')).throw;
         }
         for $signature.params -> $param {
             next if $param.invocant;
@@ -430,12 +427,12 @@ our role Application {
             %unaccounted-for{ $param.named_names }:delete;
             if !$param.optional && !($named-args{$param.named_names.any}:exists) {
                 my $name = $param.named_names[0];
-                SubcommanderException.new("Required option '$name' not provided").throw;
+                SubcommanderException.new(:message("Required option '$name' not provided")).throw;
             }
         }
         if %unaccounted-for && !$saw-slurpy-named {
             my $first = %unaccounted-for.keys.sort[0];
-            SubcommanderException.new("Unrecognized option '$first'").throw;
+            SubcommanderException.new(:message("Unrecognized option '$first'")).throw;
         }
     }
 
@@ -448,11 +445,11 @@ our role Application {
                 next unless $param.positional;
 
                 if $param.type ~~ Positional {
-                    SubcommanderException.new("Positional array parameters are not allowed ($param.gist(), command = $cmd.command-name())").throw;
+                    SubcommanderException.new(:message("Positional array parameters are not allowed ($param.gist(), command = $cmd.command-name())")).throw;
                 }
 
                 if $param.type ~~ Associative {
-                    SubcommanderException.new("Positional hash parameters are not allowed ($param.gist(), command = $cmd.command-name())").throw;
+                    SubcommanderException.new(:message("Positional hash parameters are not allowed ($param.gist(), command = $cmd.command-name())")).throw;
                 }
             }
         }
