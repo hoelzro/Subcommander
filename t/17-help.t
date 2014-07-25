@@ -30,6 +30,8 @@ my class App does Subcommander::Application {
     method has-required-param(
         Str :$param!
     ) is subcommand {}
+
+    method not-a-command {}
 }
 
 plan *;
