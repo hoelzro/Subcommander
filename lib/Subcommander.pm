@@ -11,10 +11,13 @@ my role AppOption {
 my class SubcommanderException is Exception {
     has Str $.message;
 
+    method show-me { True }
 }
 
 my class NoCommandGiven is SubcommanderException {
     method message { 'No command given' }
+
+    method show-me { False }
 }
 
 my class NoMoreValues is Exception {
@@ -473,7 +476,7 @@ our role Application {
 
             CATCH {
                 when SubcommanderException {
-                    unless $_ ~~ NoCommandGiven {
+                    if .show-me {
                         $*ERR.say: $_.message;
                     }
                     self.show-help;
