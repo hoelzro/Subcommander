@@ -39,11 +39,10 @@ good-cmd	Does good things.
 END_HELP
 
 my $GOOD_CMD_HELP = qq:to/END_HELP/;
-Usage: App good-cmd [options]
+Usage: App good-cmd [options] target
 
 Options:
 
- --target	The thing to do good things to
 --option1	Something optional
 --option2	Something else optional
 END_HELP
