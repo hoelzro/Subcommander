@@ -25,6 +25,11 @@ my class App does Subcommander::Application {
     ) is subcommand
     {
     }
+
+    #| Requires a value
+    method has-required-param(
+        Str :$param!
+    ) is subcommand {}
 }
 
 plan *;
@@ -34,8 +39,9 @@ my $*PROGRAM_NAME = 'App';
 my $TOP_LEVEL_HELP = qq:to/END_HELP/;
 Usage: App [command]
 
-good-cmd	Does good things.
-    help	Display help to the user
+          good-cmd	Does good things.
+has-required-param	Requires a value
+              help	Display help to the user
 END_HELP
 
 my $GOOD_CMD_HELP = qq:to/END_HELP/;
