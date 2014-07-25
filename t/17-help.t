@@ -11,6 +11,10 @@ sub collect-help($app, &action) {
     return ~$*ERR;
 }
 
+sub with-message($message, $help) {
+    $message ~ "\n" ~ $help
+}
+
 # XXX class comment?
 my class App does Subcommander::Application {
     #| Does good things.  They may come to you if you wait!
@@ -55,6 +59,14 @@ Options:
 --option2	Something else optional
 END_HELP
 
+my $REQUIRED_PARAM_HELP = qq:to/END_HELP/;
+Usage: App has-required-param [options]
+
+Options:
+
+--param	Requires a value
+END_HELP
+
 my $help;
 
 $help = collect-help(App.new, {
@@ -80,6 +92,12 @@ $help = collect-help(App.new, {
 });
 
 is $help, $GOOD_CMD_HELP;
+
+$help = collect-help(App.new, {
+    $^app.run(['has-required-param']);
+});
+
+is $help, with-message("Required option 'param' not provided", $REQUIRED_PARAM_HELP);
 
 done;
 
