@@ -22,6 +22,9 @@ Later:
   - what if the value for an option is optional? (ex. --password)
   - multis
   - slurpy app options
+  - override show-help for topical help? (ex. wwid help algorithm)
+  - sub-sub commands?
+  - When missing a parameter, highlight it in the help?
 
 Extensions:
 
