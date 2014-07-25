@@ -71,7 +71,6 @@ $help = collect-help(App.new, {
     $^app.run(['good-cmd', '--help']);
 });
 
-todo 'command --help NYI', 1;
 is $help, $GOOD_CMD_HELP;
 
 done;

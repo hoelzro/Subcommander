@@ -20,6 +20,12 @@ my class NoCommandGiven is SubcommanderException {
     method show-me { False }
 }
 
+my class ShowHelpException is SubcommanderException {
+    has $.command;
+
+    method show-me { False }
+}
+
 my class NoMoreValues is Exception {
     method message { 'No more values' }
 }
@@ -319,6 +325,10 @@ our role Application {
             when Option {
                 my ( $name, $value ) = $parser.parse-option($type-resolver, ~$_);
 
+                if $name eq 'help' {
+                    ShowHelpException.new(:command($subcommand.?command-name)).throw;
+                }
+
                 unless $value.defined {
                     try {
                         $value = $parser.demand-value;
@@ -479,7 +489,11 @@ our role Application {
                     if .show-me {
                         $*ERR.say: $_.message;
                     }
-                    self.show-help;
+                    if $_ ~~ ShowHelpException && (my $command = .command).defined {
+                        self.show-help($command);
+                    } else {
+                        self.show-help;
+                    }
                     return 1;
                 }
             }
