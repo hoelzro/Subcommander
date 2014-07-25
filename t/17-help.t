@@ -115,3 +115,4 @@ done;
 # help $bad-cmd
 # command/option aliases
 # basically, every feature I've added so far
+# Describe positional arguments before options
