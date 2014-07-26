@@ -99,12 +99,16 @@ $help = collect-help(App.new, {
 
 is $help, with-message("Required option 'param' not provided", $REQUIRED_PARAM_HELP);
 
+$help = collect-help(App.new, {
+    $^app.run(['no-such-command']);
+});
+
+is $help, with-message("No such command 'no-such-command'", $TOP_LEVEL_HELP);
+
 done;
 
-# non-existing command
 # non-existing option (app and command)
 # bad parse for option
-# --help, -h
 # --help vs --help-commands?
 # -?
 # --version, -v
