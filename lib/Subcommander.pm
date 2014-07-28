@@ -523,7 +523,7 @@ our role Application {
             }
 
             # XXX only print 'Options:' if there are any!
-            $*ERR.say: "Usage: $*PROGRAM_NAME $command-name [options] {@params.join(' ')}\n\nOptions:\n";
+            $*ERR.say: "Usage: $*PROGRAM_NAME $command-name [options]{@params.map(' ' ~ *).join('')}\n\nOptions:\n";
 
             my $max-opt-len = [max] @options>>[0]>>.chars; # XXX graphemes
             my $format      = "%{$max-opt-len}s\t%s";
