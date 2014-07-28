@@ -106,9 +106,32 @@ $help = collect-help(App.new, {
 
 is $help, with-message("No such command 'no-such-command'", $TOP_LEVEL_HELP);
 
+$help = collect-help(App.new, {
+    $^app.run(['--unknown-option', 'with-value', 'good-cmd', 'nothing']);
+});
+
+is $help, with-message("Unrecognized option 'unknown-option'", $TOP_LEVEL_HELP);
+
+$help = collect-help(App.new, {
+    $^app.run(['--unknown-option', '--interactive', 'good-cmd', 'nothing']);
+});
+
+is $help, with-message("Unrecognized option 'unknown-option'", $TOP_LEVEL_HELP);
+
+$help = collect-help(App.new, {
+    $^app.run(['good-cmd', '--unknown-option', 'with-value', 'nothing']);
+});
+
+is $help, with-message("Unrecognized option 'unknown-option'", $GOOD_CMD_HELP);
+
+$help = collect-help(App.new, {
+    $^app.run(['good-cmd', '--unknown-option', '--interactive', 'nothing']);
+});
+
+is $help, with-message("Unrecognized option 'unknown-option'", $GOOD_CMD_HELP);
+
 done;
 
-# non-existing option (app and command)
 # bad parse for option
 # --help vs --help-commands?
 # -?
