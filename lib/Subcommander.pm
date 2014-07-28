@@ -444,7 +444,7 @@ our role Application {
         }
         if %unaccounted-for && !$saw-slurpy-named {
             my $first = %unaccounted-for.keys.sort[0];
-            SubcommanderException.new(:message("Unrecognized option '$first'")).throw;
+            SubcommanderException.new(:message("Unrecognized option '$first'"), :command($command.?command-name)).throw;
         }
     }
 
