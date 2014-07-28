@@ -10,6 +10,7 @@ my role AppOption {
 
 my class SubcommanderException is Exception {
     has Str $.message;
+    has $.command;
 
     method show-me { True }
 }
@@ -21,8 +22,6 @@ my class NoCommandGiven is SubcommanderException {
 }
 
 my class ShowHelpException is SubcommanderException {
-    has $.command;
-
     method show-me { False }
 }
 
@@ -440,7 +439,7 @@ our role Application {
             %unaccounted-for{ $param.named_names }:delete;
             if !$param.optional && !($named-args{$param.named_names.any}:exists) {
                 my $name = $param.named_names[0];
-                SubcommanderException.new(:message("Required option '$name' not provided")).throw;
+                SubcommanderException.new(:message("Required option '$name' not provided"), :command($command.?command-name)).throw;
             }
         }
         if %unaccounted-for && !$saw-slurpy-named {
@@ -489,7 +488,7 @@ our role Application {
                     if .show-me {
                         $*ERR.say: $_.message;
                     }
-                    if $_ ~~ ShowHelpException && (my $command = .command).defined {
+                    if (my $command = .command).defined {
                         self.show-help($command);
                     } else {
                         self.show-help;
