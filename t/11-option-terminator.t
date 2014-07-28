@@ -35,7 +35,7 @@ my class App does Subcommander::Application {
         $prev-bool-flag = $bool-flag;
     }
 
-    method show-help {
+    method show-help($?) {
         $show-help-called = True;
     }
 }

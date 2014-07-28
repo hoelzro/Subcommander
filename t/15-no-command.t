@@ -5,7 +5,7 @@ use Subcommander;
 my $show-help-called;
 
 my class App does Subcommander::Application {
-    method show-help {
+    method show-help($?) {
         $show-help-called = True;
     }
 }

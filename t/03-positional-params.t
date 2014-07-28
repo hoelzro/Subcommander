@@ -46,7 +46,7 @@ my class App does Subcommander::Application {
         $previous-int-arg = $one;
     }
 
-    method show-help {
+    method show-help($?) {
         $show-help-called = True;
     }
 }

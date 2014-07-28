@@ -43,7 +43,7 @@ my class App does Subcommander::Application {
         $.prev-arg = $arg;
     }
 
-    method show-help {
+    method show-help($?) {
         $.showed-help = True;
     }
 
