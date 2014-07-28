@@ -32,6 +32,7 @@ my class App does Subcommander::Application {
 
     #| Requires a value
     method has-required-param(
+        #| Requires a value
         Str :$param!
     ) is subcommand {}
 
