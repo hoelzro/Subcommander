@@ -113,6 +113,11 @@ our role TypeResolver {
                 return InvertedBool;
             }
         }
+
+        unless %!named{$name}:exists {
+            SubcommanderException.new(:message("Unrecognized option '$name'")).throw;
+        }
+
         %!named{$name}
     }
 
