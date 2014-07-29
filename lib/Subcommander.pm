@@ -49,18 +49,26 @@ my class InvertedBool is Bool {
 
 our role TypeResolver {
     has %!named;
+    has $!seen-named-slurpy;
     has @!positional;
 
     multi submethod BUILD(:&command!) {
         for &command.signature.params -> $param {
             next if $param.invocant;
-            next if $param.slurpy;
 
             if $param.named {
+                if $param.slurpy {
+                    if $param.gist ne '*%_' {
+                        $!seen-named-slurpy = True;
+                    }
+                    next;
+                }
+
                 for $param.named_names -> $name {
                     %!named{$name} = $param.type;
                 }
             } else {
+                next if $param.slurpy;
                 @!positional.push: $param.type;
             }
         }
@@ -114,7 +122,7 @@ our role TypeResolver {
             }
         }
 
-        unless %!named{$name}:exists {
+        if !(%!named{$name}:exists) && !$!seen-named-slurpy {
             SubcommanderException.new(:message("Unrecognized option '$name'")).throw;
         }
 
