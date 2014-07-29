@@ -344,7 +344,7 @@ our role Application {
                     my ( $name, $value ) = $parser.parse-option($type-resolver, ~$_);
 
                     if $name eq 'help' {
-                        ShowHelpException.new(:command($subcommand.?command-name)).throw;
+                        ShowHelpException.new.throw;
                     }
 
                     # type resolution must precede name canonicalization (due to things like --no-flag)
