@@ -330,76 +330,85 @@ our role Application {
     }
 
     method !parse-command-line(@args) {
-        my %command-options;
-        my @command-args;
-        my $subcommand;
+        try {
+            my %command-options;
+            my @command-args;
+            my $subcommand;
 
-        my $type-resolver = $.type-resolver(:application(self));
-        my $canonicalizer = $.option-canonicalizer(:application(self));
-        my $parser = $.option-parser(:@args);
+            my $type-resolver = $.type-resolver(:application(self));
+            my $canonicalizer = $.option-canonicalizer(:application(self));
+            my $parser = $.option-parser(:@args);
 
-        for $parser.parse {
-            when Option {
-                my ( $name, $value ) = $parser.parse-option($type-resolver, ~$_);
+            for $parser.parse {
+                when Option {
+                    my ( $name, $value ) = $parser.parse-option($type-resolver, ~$_);
 
-                if $name eq 'help' {
-                    ShowHelpException.new(:command($subcommand.?command-name)).throw;
+                    if $name eq 'help' {
+                        ShowHelpException.new(:command($subcommand.?command-name)).throw;
+                    }
+
+                    # type resolution must precede name canonicalization (due to things like --no-flag)
+                    my $type = $type-resolver.typeof($name);
+                    $name = $canonicalizer.canonicalize($name);
+
+                    if $subcommand.defined {
+                        if $type-resolver.is-array($name) {
+                            $type = $type.of;
+                            unless %command-options{$name}:exists {
+                                %command-options{$name} = Array[$type].new;
+                            }
+                            %command-options{$name}.push: $type-resolver.coerce($value, $type);
+                        } else {
+                            %command-options{$name} = $type-resolver.coerce($value, $type);
+                        }
+                    } else {
+                        unless self!is-valid-app-option($name) {
+                            SubcommanderException.new(:message("Unrecognized option '$name'")).throw;
+                        }
+
+                        my $container     := self."$name"();
+                        my $container-type = $container.VAR;
+
+                        if $container-type ~~ Positional { # XXX is this the right test?
+                            $type = $container-type.of;
+                            if $type.WHERE == Mu.WHERE { # XXX dodgy
+                                $type = Any;
+                            }
+                            # XXX we're assuming it's something that supports push
+                            $container.push: $type-resolver.coerce($value, $type);
+                        } else {
+                            $container = $type-resolver.coerce($value, $type);
+                        }
+                    }
                 }
 
-                # type resolution must precede name canonicalization (due to things like --no-flag)
-                my $type = $type-resolver.typeof($name);
-                $name = $canonicalizer.canonicalize($name);
-
-                if $subcommand.defined {
-                    if $type-resolver.is-array($name) {
-                        $type = $type.of;
-                        unless %command-options{$name}:exists {
-                            %command-options{$name} = Array[$type].new;
-                        }
-                        %command-options{$name}.push: $type-resolver.coerce($value, $type);
+                when Target {
+                    if $subcommand.defined {
+                        @command-args.push: $type-resolver.coerce(~$_, $type-resolver.typeof(+@command-args));
                     } else {
-                        %command-options{$name} = $type-resolver.coerce($value, $type);
-                    }
-                } else {
-                    unless self!is-valid-app-option($name) {
-                        SubcommanderException.new(:message("Unrecognized option '$name'")).throw;
-                    }
-
-                    my $container     := self."$name"();
-                    my $container-type = $container.VAR;
-
-                    if $container-type ~~ Positional { # XXX is this the right test?
-                        $type = $container-type.of;
-                        if $type.WHERE == Mu.WHERE { # XXX dodgy
-                            $type = Any;
+                        $subcommand = self!get-commands(){~$_};
+                        if $subcommand !~~ Subcommand {
+                            SubcommanderException.new(:message("No such command '$_'")).throw;
                         }
-                        # XXX we're assuming it's something that supports push
-                        $container.push: $type-resolver.coerce($value, $type);
-                    } else {
-                        $container = $type-resolver.coerce($value, $type);
+                        $type-resolver = $.type-resolver(:command($subcommand));
+                        $canonicalizer = DefaultOptionCanonicalizer.new(:command($subcommand));
                     }
                 }
             }
 
-            when Target {
-                if $subcommand.defined {
-                    @command-args.push: $type-resolver.coerce(~$_, $type-resolver.typeof(+@command-args));
-                } else {
-                    $subcommand = self!get-commands(){~$_};
-                    if $subcommand !~~ Subcommand {
-                        SubcommanderException.new(:message("No such command '$_'")).throw;
-                    }
-                    $type-resolver = $.type-resolver(:command($subcommand));
-                    $canonicalizer = DefaultOptionCanonicalizer.new(:command($subcommand));
+            unless $subcommand {
+                NoCommandGiven.new.throw;
+            }
+
+            return ( $subcommand, @command-args.item, %command-options.item );
+
+            CATCH {
+                when SubcommanderException {
+                    # XXX is there a way we can set the backtrace?
+                    $_.WHAT.new(:message($_.message), :command($subcommand.?command-name)).throw
                 }
             }
         }
-
-        unless $subcommand {
-            NoCommandGiven.new.throw;
-        }
-
-        return ( $subcommand, @command-args.item, %command-options.item );
     }
 
     method !get-commands {
