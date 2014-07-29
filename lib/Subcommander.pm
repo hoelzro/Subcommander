@@ -64,6 +64,7 @@ our role TypeResolver {
                 @!positional.push: $param.type;
             }
         }
+        %!named<help> = Bool;
     }
 
     multi submethod BUILD(::Application :$application) {
@@ -234,6 +235,18 @@ our role OptionParser {
             }
         }
 
+        unless $value.defined {
+            try {
+                $value = $.demand-value;
+
+                CATCH {
+                    when NoMoreValues {
+                        SubcommanderException.new(:message("Option '$key' requires a value")).throw;
+                    }
+                }
+            }
+        }
+
         ( $key, $value )
     }
 
@@ -328,17 +341,6 @@ our role Application {
                     ShowHelpException.new(:command($subcommand.?command-name)).throw;
                 }
 
-                unless $value.defined {
-                    try {
-                        $value = $parser.demand-value;
-
-                        CATCH {
-                            when NoMoreValues {
-                                SubcommanderException.new(:message("Option '$name' requires a value")).throw;
-                            }
-                        }
-                    }
-                }
                 # type resolution must precede name canonicalization (due to things like --no-flag)
                 my $type = $type-resolver.typeof($name);
                 $name = $canonicalizer.canonicalize($name);
