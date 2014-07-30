@@ -137,14 +137,7 @@ our role TypeResolver {
 
         if $from !~~ $to {
             # $value = try $from."$name'(); didn't work, look into this
-            try {
-                $value = $from."$name"();
-                CATCH {
-                    default {
-                        SubcommanderException.new(:message("Failed to convert '$from'")).throw;
-                    }
-                }
-            }
+            $value = $from."$name"();
         }
         $value
     }
@@ -337,6 +330,18 @@ our role Application {
         ?@names.first(* eq $name)
     }
 
+    method !safe-coerce(TypeResolver $resolver, Str $name, $value, Any:U $type) {
+        try {
+            return $resolver.coerce($value, $type);
+
+            CATCH {
+                default {
+                    SubcommanderException.new(:message("Failed to convert '$value' to $type.WHAT.^name()")).throw;
+                }
+            }
+        }
+    }
+
     method !parse-command-line(@args) {
         try {
             my %command-options;
@@ -365,9 +370,9 @@ our role Application {
                             unless %command-options{$name}:exists {
                                 %command-options{$name} = Array[$type].new;
                             }
-                            %command-options{$name}.push: $type-resolver.coerce($value, $type);
+                            %command-options{$name}.push: self!safe-coerce($type-resolver, $name, $value, $type);
                         } else {
-                            %command-options{$name} = $type-resolver.coerce($value, $type);
+                            %command-options{$name} = self!safe-coerce($type-resolver, $name, $value, $type);
                         }
                     } else {
                         unless self!is-valid-app-option($name) {
@@ -383,16 +388,17 @@ our role Application {
                                 $type = Any;
                             }
                             # XXX we're assuming it's something that supports push
-                            $container.push: $type-resolver.coerce($value, $type);
+                            $container.push: self!safe-coerce($type-resolver, $name, $value, $type);
                         } else {
-                            $container = $type-resolver.coerce($value, $type);
+                            $container = self!safe-coerce($type-resolver, $name, $value, $type);
                         }
                     }
                 }
 
                 when Target {
                     if $subcommand.defined {
-                        @command-args.push: $type-resolver.coerce(~$_, $type-resolver.typeof(+@command-args));
+                        # XXX better name for safe-coerce
+                        @command-args.push: self!safe-coerce($type-resolver, ~+@command-args, ~$_, $type-resolver.typeof(+@command-args));
                     } else {
                         $subcommand = self!get-commands(){~$_};
                         if $subcommand !~~ Subcommand {
