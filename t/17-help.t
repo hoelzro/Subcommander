@@ -49,6 +49,7 @@ Usage: App [command]
           good-cmd	Does good things.
 has-required-param	Requires a value
               help	Display help to the user
+           version	Display the current version to the user
 END_HELP
 
 my $GOOD_CMD_HELP = qq:to/END_HELP/;
@@ -138,10 +139,6 @@ is $help, with-message("Failed to convert 'foo' to Int", $GOOD_CMD_HELP);
 
 done;
 
-# --help vs --help-commands?
-# -?
-# --version, -v
-# version command
 # does --help/help command run app option accessors?
 # Insert app comment/command comment before options/targets
 # app options
