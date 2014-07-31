@@ -130,9 +130,14 @@ $help = collect-help(App.new, {
 
 is $help, with-message("Unrecognized option 'unknown-option'", $GOOD_CMD_HELP);
 
+$help = collect-help(App.new, {
+    $^app.run(['good-cmd', '--option2=foo', 'nothing']);
+});
+
+is $help, with-message("Failed to convert 'foo' to Int", $GOOD_CMD_HELP);
+
 done;
 
-# bad parse for option
 # --help vs --help-commands?
 # -?
 # --version, -v
