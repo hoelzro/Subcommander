@@ -590,4 +590,9 @@ our role Application {
             }
         }
     }
+
+    #| Display the current version to the user
+    method show-version is subcommand('version') {
+        say(self.^ver // '');
+    }
 }
