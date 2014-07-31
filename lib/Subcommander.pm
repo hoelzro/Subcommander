@@ -10,7 +10,7 @@ my role AppOption {
 
 my class SubcommanderException is Exception {
     has Str $.message;
-    has $.command;
+    has $.command is rw;
 
     method show-me { True }
 }
@@ -430,8 +430,8 @@ our role Application {
 
             CATCH {
                 when SubcommanderException {
-                    # XXX is there a way we can set the backtrace?
-                    $_.WHAT.new(:message($_.message), :command($subcommand.?command-name)).throw
+                    .command = $subcommand.?command-name;
+                    .throw
                 }
             }
         }
