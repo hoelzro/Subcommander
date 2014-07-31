@@ -25,6 +25,15 @@ my class ShowHelpException is SubcommanderException {
     method show-me { False }
 }
 
+my class TypeCoercionError is SubcommanderException {
+    has $.value;
+    has $.target;
+
+    method message {
+        "Failed to convert '$.value' to $.target.WHAT.^name()"
+    }
+}
+
 my class NoMoreValues is Exception {
     method message { 'No more values' }
 }
@@ -336,7 +345,10 @@ our role Application {
 
             CATCH {
                 default {
-                    SubcommanderException.new(:message("Failed to convert '$value' to $type.WHAT.^name()")).throw;
+                    TypeCoercionError.new(
+                        :$value,
+                        :target($type),
+                    ).throw
                 }
             }
         }
