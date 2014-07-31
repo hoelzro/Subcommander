@@ -28,6 +28,7 @@ my class ShowHelpException is SubcommanderException {
 my class TypeCoercionError is SubcommanderException {
     has $.value;
     has $.target;
+    has $.original;
 
     method message {
         "Failed to convert '$.value' to $.target.WHAT.^name()"
@@ -348,6 +349,7 @@ our role Application {
                     TypeCoercionError.new(
                         :$value,
                         :target($type),
+                        :original($_),
                     ).throw
                 }
             }
