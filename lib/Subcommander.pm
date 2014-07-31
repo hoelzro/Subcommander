@@ -25,6 +25,8 @@ my class ShowHelpException is SubcommanderException {
     method show-me { False }
 }
 
+my class ShowVersionException is SubcommanderException {}
+
 my class TypeCoercionError is SubcommanderException {
     has $.value;
     has $.target;
@@ -528,6 +530,9 @@ our role Application {
             return 0;
 
             CATCH {
+                when ShowVersionException {
+                    return 0;
+                }
                 when SubcommanderException {
                     if .show-me {
                         $*ERR.say: $_.message;
@@ -592,7 +597,8 @@ our role Application {
     }
 
     #| Display the current version to the user
-    method show-version is subcommand('version') {
+    method show-version is subcommand('version') is option('version') returns Bool {
         say(self.^ver // '');
+        ShowVersionException.new.throw;
     }
 }
