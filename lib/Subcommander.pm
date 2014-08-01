@@ -554,7 +554,8 @@ our role Application {
             my $command = self!get-commands(){$command-name};
 
             unless $command {
-                return;
+                $*ERR.say: "No such command '$command-name'";
+                return $.show-help;
             }
 
             my @params;
