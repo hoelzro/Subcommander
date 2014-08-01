@@ -137,12 +137,17 @@ $help = collect-help(App.new, {
 
 is $help, with-message("Failed to convert 'foo' to Int", $GOOD_CMD_HELP);
 
+$help = collect-help(App.new, {
+    $^app.run(['help', 'bad-cmd']);
+});
+
+is $help, with-message("No such command 'bad-cmd'", $TOP_LEVEL_HELP);
+
 done;
 
 # does --help/help command run app option accessors?
 # Insert app comment/command comment before options/targets
 # app options
-# help $bad-cmd
 # command/option aliases
 # basically, every feature I've added so far
 # Describe positional arguments before options
