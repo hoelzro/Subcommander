@@ -578,14 +578,21 @@ our role Application {
                 if $param.named {
                     @options.push: ['--' ~ $param.named_names[0], $param];
                 } else {
-                    @params.push: $param.name.subst(/^ '$'/, ''); # XXX where do the docs for this go?
+                    @params.push: $param;
                 }
             }
 
-            # XXX only print 'Options:' if there are any!
-            $*ERR.say: "Usage: $*PROGRAM_NAME $command-name [options]{@params.map(' ' ~ *).join('')}\n\nOptions:\n";
+            $*ERR.say: "Usage: $*PROGRAM_NAME $command-name {@options ?? '[options]' !! ''}{@params.map(' ' ~ *.name.subst(/^ '$'/, '')).join('')}";
 
-            print-pair-table(@options.sort.map({ ( $_[0], $_[1].WHY // '' ) }));
+            if @params {
+                $*ERR.say: "\nArguments:\n";
+                print-pair-table(@params.map({ ( .name.subst(/^ '$'/, ''), .WHY // '' ) }));
+            }
+
+            if @options {
+                $*ERR.say: "\nOptions:\n";
+                print-pair-table(@options.sort.map({ ( $_[0], $_[1].WHY // '' ) }));
+            }
         } else {
             $*ERR.say: "Usage: $*PROGRAM_NAME [command]\n";
             my %commands = %(self!get-commands);
