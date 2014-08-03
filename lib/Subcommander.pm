@@ -548,6 +548,16 @@ our role Application {
         }
     }
 
+    my sub print-pair-table(@pairs) {
+        # XXX graphemes?
+        my $max-len = [max] @pairs.map(-> $first, $ { $first.chars });
+        my $format  = "%{$max-len}s\t%s";
+
+        for @pairs -> $first, $second {
+            $*ERR.say: sprintf($format, $first, $second);
+        }
+    }
+
     #| Display help to the user
     method show-help(Str $command-name?) is subcommand('help') {
         if $command-name.defined {
@@ -575,25 +585,12 @@ our role Application {
             # XXX only print 'Options:' if there are any!
             $*ERR.say: "Usage: $*PROGRAM_NAME $command-name [options]{@params.map(' ' ~ *).join('')}\n\nOptions:\n";
 
-            my $max-opt-len = [max] @options>>[0]>>.chars; # XXX graphemes
-            my $format      = "%{$max-opt-len}s\t%s";
-
-            for @options.sort -> ( $name, $option )  {
-                my $description = $option.WHY // '';
-                $*ERR.say: sprintf($format, $name, $description);
-            }
+            print-pair-table(@options.sort.map({ ( $_[0], $_[1].WHY // '' ) }));
         } else {
             $*ERR.say: "Usage: $*PROGRAM_NAME [command]\n";
-            my %commands    = %(self!get-commands);
-            my $max-cmd-len = [max] %commands.keys>>.chars; # XXX graphemes?
-            my $format      = "%{$max-cmd-len}s\t%s";
+            my %commands = %(self!get-commands);
 
-            for %commands.keys.sort -> $name {
-                my $command = %commands{$name};
-                my $description = ~($command.WHY // '');
-                $description .= subst(/<?after '.'>.*/, '');
-                $*ERR.say: sprintf($format, $name, $description);
-            }
+            print-pair-table(%commands.keys.sort.map({ ( $^name, (%commands{$^name}.WHY // '').Str.subst(/<?after '.'> .*/, '') ) }));
         }
     }
 
