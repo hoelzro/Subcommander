@@ -55,6 +55,10 @@ END_HELP
 my $GOOD_CMD_HELP = qq:to/END_HELP/;
 Usage: App good-cmd [options] target
 
+Arguments:
+
+target	The thing to do good things to
+
 Options:
 
 --option1	Something optional
