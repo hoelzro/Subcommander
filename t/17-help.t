@@ -57,6 +57,8 @@ END_HELP
 my $GOOD_CMD_HELP = qq:to/END_HELP/;
 Usage: App good-cmd [options] target
 
+Does good things. They may come to you if you wait! Batteries not included.
+
 Arguments:
 
 target	The thing to do good things to
@@ -69,6 +71,8 @@ END_HELP
 
 my $REQUIRED_PARAM_HELP = qq:to/END_HELP/;
 Usage: App has-required-param [options]
+
+Requires a value
 
 Options:
 
@@ -151,7 +155,6 @@ is $help, with-message("No such command 'bad-cmd'", $TOP_LEVEL_HELP);
 
 done;
 
-# Insert app comment/command comment before options/targets
 # app options
 # command/option aliases
 # basically, every feature I've added so far
