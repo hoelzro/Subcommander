@@ -25,6 +25,7 @@ Later:
   - override show-help for topical help? (ex. wwid help algorithm)
   - sub-sub commands?
   - When missing a parameter, highlight it in the help?
+  - Document how help/--help will still call accessors for app options
 
 Extensions:
 

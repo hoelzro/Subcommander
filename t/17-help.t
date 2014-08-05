@@ -149,9 +149,7 @@ is $help, with-message("No such command 'bad-cmd'", $TOP_LEVEL_HELP);
 
 done;
 
-# does --help/help command run app option accessors?
 # Insert app comment/command comment before options/targets
 # app options
 # command/option aliases
 # basically, every feature I've added so far
-# Describe positional arguments before options
