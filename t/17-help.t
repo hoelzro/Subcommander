@@ -15,7 +15,7 @@ sub with-message($message, $help) {
     $message ~ "\n" ~ $help
 }
 
-# XXX class comment?
+#| A sample application. Here's a really nice description.
 my class App does Subcommander::Application {
     #| Does good things.  They may come to you if you wait!
     #| Batteries not included.
@@ -45,6 +45,8 @@ my $*PROGRAM_NAME = 'App';
 
 my $TOP_LEVEL_HELP = qq:to/END_HELP/;
 Usage: App [command]
+
+A sample application. Here's a really nice description.
 
           good-cmd	Does good things.
 has-required-param	Requires a value
