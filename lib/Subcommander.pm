@@ -584,6 +584,12 @@ our role Application {
 
             $*ERR.say: "Usage: $*PROGRAM_NAME $command-name {@options ?? '[options]' !! ''}{@params.map(' ' ~ *.name.subst(/^ '$'/, '')).join('')}";
 
+            my $cmd-docs = $command.WHY;
+
+            if $cmd-docs {
+                $*ERR.say: "\n$cmd-docs";
+            }
+
             if @params {
                 $*ERR.say: "\nArguments:\n";
                 print-pair-table(@params.map({ ( .name.subst(/^ '$'/, ''), .WHY // '' ) }));
