@@ -595,6 +595,10 @@ our role Application {
             }
         } else {
             $*ERR.say: "Usage: $*PROGRAM_NAME [command]\n";
+            my $app-docs = self.WHY;
+            if $app-docs {
+                $*ERR.say: "$app-docs\n";
+            }
             my %commands = %(self!get-commands);
 
             print-pair-table(%commands.keys.sort.map({ ( $^name, (%commands{$^name}.WHY // '').Str.subst(/<?after '.'> .*/, '') ) }));
