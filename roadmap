@@ -1,3 +1,9 @@
+Pre-release:
+
+  - Release IO::String
+  - License
+  - Docs
+
 Now:
 
   - show help (no command, bad command, help command w/o args)
