@@ -17,6 +17,9 @@ sub with-message($message, $help) {
 
 #| A sample application. Here's a really nice description.
 my class App does Subcommander::Application {
+    #| Whether or not to make the application interactive
+    has $.interactive is option;
+
     #| Does good things.  They may come to you if you wait!
     #| Batteries not included.
     method good-cmd(
@@ -44,9 +47,15 @@ plan *;
 my $*PROGRAM_NAME = 'App';
 
 my $TOP_LEVEL_HELP = qq:to/END_HELP/;
-Usage: App [command]
+Usage: App [options] [command]
 
 A sample application. Here's a really nice description.
+
+Options:
+
+     --interactive	Whether or not to make the application interactive
+
+Commands:
 
           good-cmd	Does good things.
 has-required-param	Requires a value
@@ -155,6 +164,5 @@ is $help, with-message("No such command 'bad-cmd'", $TOP_LEVEL_HELP);
 
 done;
 
-# app options
 # command/option aliases
 # basically, every feature I've added so far
