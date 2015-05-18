@@ -1,4 +1,4 @@
-module Subcommander:auth<hoelzro>:ver<0.0.1>;
+unit module Subcommander:auth<hoelzro>:ver<0.0.1>;
 
 my role Subcommand {
     has Str $.command-name is rw;
