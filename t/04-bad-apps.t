@@ -5,7 +5,7 @@ use Subcommander;
 
 plan 3;
 
-my $*ERR = open(IO::Spec.devnull, :w);
+my $*ERR = open($*SPEC.devnull, :w);
 
 my $exception;
 

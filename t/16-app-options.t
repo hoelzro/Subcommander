@@ -54,7 +54,7 @@ my class App does Subcommander::Application {
 
 plan *;
 
-my $*ERR = open(IO::Spec.devnull, :w);
+my $*ERR = open($*SPEC.devnull, :w);
 
 my $app;
 

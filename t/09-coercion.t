@@ -16,7 +16,7 @@ my class App does Subcommander::Application {
 
 plan 1;
 
-my $*ERR = open(IO::Spec.devnull, :w);
+my $*ERR = open($*SPEC.devnull, :w);
 
 App.new.run(['coercing', '10']);
 

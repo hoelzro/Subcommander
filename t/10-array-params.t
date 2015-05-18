@@ -30,7 +30,7 @@ my class App does Subcommander::Application {
 
 plan 6;
 
-my $*ERR = open(IO::Spec.devnull, :w);
+my $*ERR = open($*SPEC.devnull, :w);
 
 App.new.run(['listy', 'test', '--names=Bob', '--names=Fred']);
 

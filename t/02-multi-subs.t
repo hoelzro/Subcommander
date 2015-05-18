@@ -18,7 +18,7 @@ my class App does Subcommander::Application {
 }
 
 my Bool $exception-occurred = False;
-my $*ERR = open(IO::Spec.devnull, :w);
+my $*ERR = open($*SPEC.devnull, :w);
 
 try {
     App.new.run(['foo']);

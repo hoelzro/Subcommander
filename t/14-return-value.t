@@ -6,7 +6,7 @@ my class App does Subcommander::Application {
     method ok is subcommand {}
 }
 
-my $*ERR = open(IO::Spec.devnull, :w);
+my $*ERR = open($*SPEC.devnull, :w);
 
 plan 2;
 

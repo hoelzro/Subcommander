@@ -26,7 +26,7 @@ my class App does Subcommander::Application {
     }
 }
 
-my $*ERR = open(IO::Spec.devnull, :w);
+my $*ERR = open($*SPEC.devnull, :w);
 
 App.new.run(['has-aliases', '--name=Steve']);
 
