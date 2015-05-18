@@ -550,10 +550,10 @@ our role Application {
 
     my sub print-pair-table(@pairs) {
         # XXX graphemes?
-        my $max-len = [max] @pairs.map(-> $first, $ { $first.chars });
+        my $max-len = [max] @pairs.map(-> ($first, $) { $first.chars });
         my $format  = "%{$max-len}s\t%s";
 
-        for @pairs -> $first, $second {
+        for @pairs -> ($first, $second) {
             $*ERR.say: sprintf($format, $first, $second);
         }
     }
