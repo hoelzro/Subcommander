@@ -35,18 +35,18 @@ my $*ERR = open($*SPEC.devnull, :w);
 App.new.run(['listy', 'test', '--names=Bob', '--names=Fred']);
 
 is $prev-arg, 'test';
-is_deeply @prev-names.item, ['Bob', 'Fred'];
+is-deeply @prev-names.item, ['Bob', 'Fred'];
 
 reset();
 
 App.new.run(['listy-with-alias', 'test', '--names=Bob', '--pen-names=Fred']);
 
 is $prev-arg, 'test';
-is_deeply @prev-names.item, ['Bob', 'Fred'];
+is-deeply @prev-names.item, ['Bob', 'Fred'];
 
 reset();
 
 App.new.run(['int-listy', 'test', '--values=10', '--values=20']);
 
 is $prev-arg, 'test';
-is_deeply @prev-values.item, [10, 20];
+is-deeply @prev-values.item, [10, 20];

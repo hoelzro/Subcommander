@@ -67,7 +67,7 @@ ok !$app.hidden.defined;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -81,7 +81,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -95,7 +95,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -109,7 +109,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 is $app.prev-opt, 'value';
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -123,7 +123,7 @@ ok $app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 is $app.prev-arg, 'arg';
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -137,7 +137,7 @@ ok !$app.flag;
 ok $app.inty eqv 10;
 ok !$app.prev-opt.defined;
 is $app.prev-arg, 'arg';
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -151,7 +151,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -165,7 +165,7 @@ ok $app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -179,7 +179,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -193,7 +193,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -207,7 +207,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -221,7 +221,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, ['foo'];
+is-deeply $app.listy, ['foo'];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -235,7 +235,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [<foo bar>];
+is-deeply $app.listy, [<foo bar>];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -249,7 +249,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [<foo bar>];
+is-deeply $app.listy, [<foo bar>];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -263,7 +263,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -277,7 +277,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 
@@ -291,7 +291,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 is $app.bad-name, 'foo';
 ok !$app.good-hidden-name.defined;
 
@@ -305,7 +305,7 @@ ok !$app.flag;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 is $app.good-hidden-name, 'bar';
 
@@ -320,7 +320,7 @@ ok $app.flag eqv False;
 ok !$app.inty.defined;
 ok !$app.prev-opt.defined;
 ok !$app.prev-arg.defined;
-is_deeply $app.listy, [];
+is-deeply $app.listy, [];
 ok !$app.bad-name.defined;
 ok !$app.good-hidden-name.defined;
 

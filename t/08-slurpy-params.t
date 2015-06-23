@@ -56,22 +56,22 @@ my $*ERR = open($*SPEC.devnull, :w);
 App.new.run(['slurpy-pos', 'Bob', 'goes', 'to', 'the', 'store']);
 
 is $prev-name, 'Bob';
-is_deeply @prev-rest.item, ['goes', 'to', 'the', 'store'];
+is-deeply @prev-rest.item, ['goes', 'to', 'the', 'store'];
 
 reset();
 
 App.new.run(['slurpy-named', 'Bob', '--age=10', '--location=Home']);
 
 is $prev-name, 'Bob';
-is_deeply %prev-rest.item, { :age<10>, :location<Home> };
+is-deeply %prev-rest.item, { :age<10>, :location<Home> };
 
 reset();
 
 App.new.run(['slurpy-both', 'Darmok', 'and', 'Jalad', '--season=5', '--episode=2']);
 
 is $prev-name, 'Darmok';
-is_deeply @prev-rest.item, ['and', 'Jalad'];
-is_deeply %prev-rest.item, { :season<5>, :episode<2> };
+is-deeply @prev-rest.item, ['and', 'Jalad'];
+is-deeply %prev-rest.item, { :season<5>, :episode<2> };
 
 reset();
 

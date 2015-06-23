@@ -5,7 +5,7 @@ use Subcommander;
 
 plan 4;
 
-skip_rest 'Module:ver<*> NYI';
+skip-rest 'Module:ver<*> NYI';
 
 sub collect-output($app, &block) {
     my $*OUT = IO::String.new;
