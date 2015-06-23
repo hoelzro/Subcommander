@@ -582,7 +582,7 @@ our role Application {
                 }
             }
 
-            $*ERR.say: "Usage: $*PROGRAM_NAME $command-name {@options ?? '[options]' !! ''}{@params.map(' ' ~ *.name.subst(/^ '$'/, '')).join('')}";
+            $*ERR.say: "Usage: $*PROGRAM-NAME $command-name {@options ?? '[options]' !! ''}{@params.map(' ' ~ *.name.subst(/^ '$'/, '')).join('')}";
 
             my $cmd-docs = $command.WHY;
 
@@ -600,7 +600,7 @@ our role Application {
                 print-pair-table(@options.sort.map({ ( $_[0], $_[1].WHY // '' ) }));
             }
         } else {
-            $*ERR.say: "Usage: $*PROGRAM_NAME [command]\n";
+            $*ERR.say: "Usage: $*PROGRAM-NAME [command]\n";
             my $app-docs = self.WHY;
             if $app-docs {
                 $*ERR.say: "$app-docs\n";

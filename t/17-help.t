@@ -44,7 +44,7 @@ my class App does Subcommander::Application {
 
 plan *;
 
-my $*PROGRAM_NAME = 'App';
+my $*PROGRAM-NAME = 'App';
 
 my $TOP_LEVEL_HELP = qq:to/END_HELP/;
 Usage: App [options] [command]
