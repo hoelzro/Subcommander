@@ -42,7 +42,8 @@ my class App does Subcommander::Application {
     method not-a-command {}
 }
 
-plan *;
+plan 12;
+todo 'App options are NYI', 12;
 
 my $*PROGRAM-NAME = 'App';
 
